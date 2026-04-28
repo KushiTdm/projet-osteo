@@ -11,7 +11,7 @@ const testimonials = [
     name: 'Marie L.',
     role: 'Patiente depuis 3 ans',
     quote:
-      "Après des années de lombalgies invalidantes, j'ai enfin retrouvé une qualité de vie grâce au suivi du Dr Martin. Son approche globale, son écoute et sa précision font toute la différence. Je ne consulte plus qu'ici.",
+      "Après des années de lombalgies invalidantes, j'ai enfin retrouvé une qualité de vie grâce au suivi du Dr Pales. Son approche globale, son écoute et sa précision font toute la différence. Je ne consulte plus qu'ici.",
     rating: 5,
   },
   {
@@ -25,7 +25,7 @@ const testimonials = [
     name: 'Camille D.',
     role: 'Jeune maman, Paris 7e',
     quote:
-      "J'ai amené mon fils de 2 mois pour des coliques persistantes. Les résultats ont été visibles dès la première séance. Le Dr Martin prend le temps d'expliquer chaque geste, ce qui est rassurant pour les parents.",
+      "J'ai amené mon fils de 2 mois pour des coliques persistantes. Les résultats ont été visibles dès la première séance. Le Dr Pales prend le temps d'expliquer chaque geste, ce qui est rassurant pour les parents.",
     rating: 5,
   },
   {

@@ -67,8 +67,8 @@ export default function About() {
         {/* Image */}
         <div ref={imgRef} className="relative h-80 md:h-auto overflow-hidden">
           <img
-            src="https://images.pexels.com/photos/5327585/pexels-photo-5327585.jpeg?auto=compress&cs=tinysrgb&w=900"
-            alt="Dr Sophie Martin, ostéopathe à Paris"
+            src="/assets/Osteopathe_arthur.png"
+            alt="Dr Arthur Pales, ostéopathe à Paris"
             className="absolute inset-0 w-full h-full object-cover object-top"
           />
           {/* Subtle tint */}
@@ -110,7 +110,7 @@ export default function About() {
               className="font-semibold not-italic"
               style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic' }}
             >
-              Dr Sophie Martin
+              Dr Arthur Pales
             </em>
           </SectionHeading>
 

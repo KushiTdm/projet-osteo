@@ -229,7 +229,7 @@ export default function Contact() {
                           <input
                             type="text"
                             className="w-full border border-stone-200 bg-[var(--color-cream)] px-4 py-3 text-sm text-stone-700 focus:outline-none focus:border-stone-400 transition-colors"
-                            placeholder={label === 'Prénom' ? 'Sophie' : 'Martin'}
+                            placeholder={label === 'Prénom' ? 'Arthur' : 'Pales'}
                             style={{ fontFamily: 'var(--font-body)' }}
                           />
                         </div>

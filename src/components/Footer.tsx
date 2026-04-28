@@ -10,12 +10,11 @@ const navLinks = [
 ];
 
 const soinsLinks = [
-  'Ostéopathie structurelle',
-  'Ostéopathie crânio-sacrée',
-  'Ostéopathie viscérale',
-  'Pédiatrie & nourrissons',
-  'Suivi de grossesse',
-  'Ostéopathie du sportif',
+  "Consultation d'ostéopathie adulte",
+  "Consultation d'ostéopathie du sportif",
+  "Consultation d'ostéopathie enfant & nourrisson",
+  "Consultation d'ostéopathie femme enceinte",
+  "Consultation d'ostéopathie à domicile",
 ];
 
 export default function Footer() {
@@ -147,7 +146,7 @@ export default function Footer() {
             className="text-[11px] text-stone-600"
             style={{ fontFamily: 'var(--font-body)' }}
           >
-            © 2026 OstéoParis – Dr Sophie Martin. Tous droits réservés.
+            © 2026 OstéoParis – Dr Arthur Pales. Tous droits réservés.
           </p>
           <div className="flex gap-6">
             {['Mentions légales', 'Politique de confidentialité', 'RGPD'].map((link) => (

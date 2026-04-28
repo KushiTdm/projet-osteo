@@ -4,9 +4,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Header from './components/Header';
 import Hero from './components/Hero';
-import MarqueeBanner from './components/MarqueeBanner';
 import About from './components/About';
-import Conditions from './components/Conditions';
+import Services from './components/Services';
 import Testimonials from './components/Testimonials';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
@@ -15,7 +14,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 function App() {
   useEffect(() => {
-    // Global ScrollTrigger refresh after all components mount
     setTimeout(() => ScrollTrigger.refresh(), 300);
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, []);
@@ -28,9 +26,8 @@ function App() {
       <Header />
       <main>
         <Hero />
-        <MarqueeBanner />
         <About />
-        <Conditions />
+        <Services />
         <Testimonials />
         <Contact />
       </main>
