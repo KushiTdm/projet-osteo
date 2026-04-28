@@ -1,5 +1,5 @@
 // PATH: src/components/Testimonials.tsx
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SectionLabel, SectionHeading } from './ui';
@@ -40,6 +40,8 @@ const testimonials = [
 export default function Testimonials() {
   const sectionRef = useRef<HTMLElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -75,6 +77,33 @@ export default function Testimonials() {
     return () => ctx.revert();
   }, []);
 
+  // GSAP animation for carousel slide
+  const animateSlide = (index: number) => {
+    if (!carouselRef.current) return;
+    const cards = carouselRef.current.querySelectorAll('.carousel-card');
+
+    gsap.to(cards, {
+      x: -index * 100 + '%',
+      duration: 0.6,
+      ease: 'power3.inOut',
+    });
+  };
+
+  const goToSlide = (index: number) => {
+    setActiveIndex(index);
+    animateSlide(index);
+  };
+
+  const nextSlide = () => {
+    const next = (activeIndex + 1) % testimonials.length;
+    goToSlide(next);
+  };
+
+  const prevSlide = () => {
+    const prev = (activeIndex - 1 + testimonials.length) % testimonials.length;
+    goToSlide(prev);
+  };
+
   return (
     <section ref={sectionRef} className="py-28 bg-[var(--color-ink)] relative overflow-hidden">
       {/* Subtle background texture */}
@@ -101,39 +130,64 @@ export default function Testimonials() {
           </SectionHeading>
         </div>
 
-        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-5">
+        {/* Desktop Grid — hidden on mobile */}
+        <div className="hidden md:grid md:grid-cols-2 xl:grid-cols-4 gap-5">
           {testimonials.map((t) => (
-            <div
-              key={t.name}
-              className="testimonial-card bg-white/5 border border-white/10 p-7 hover:bg-white/8 transition-colors"
-            >
-              <div className="flex gap-0.5 mb-5">
-                {Array.from({ length: t.rating }).map((_, i) => (
-                  <span key={i} className="text-amber-400 text-sm">★</span>
-                ))}
-              </div>
-              <p
-                className="text-stone-300 text-[13px] leading-relaxed mb-6 italic"
-                style={{ fontFamily: 'var(--font-display)', fontWeight: 400 }}
-              >
-                « {t.quote} »
-              </p>
-              <div className="border-t border-white/10 pt-4">
-                <p
-                  className="text-white text-[14px]"
-                  style={{ fontFamily: 'var(--font-display)', fontWeight: 500 }}
-                >
-                  {t.name}
-                </p>
-                <p
-                  className="text-stone-500 text-[11px] mt-0.5 uppercase tracking-widest"
-                  style={{ fontFamily: 'var(--font-body)' }}
-                >
-                  {t.role}
-                </p>
-              </div>
-            </div>
+            <TestimonialCard key={t.name} testimonial={t} />
           ))}
+        </div>
+
+        {/* Mobile Carousel — hidden on md+ */}
+        <div className="md:hidden relative">
+          {/* Carousel track */}
+          <div ref={carouselRef} className="overflow-hidden">
+            <div className="flex">
+              {testimonials.map((t, i) => (
+                <div
+                  key={t.name}
+                  className="carousel-card w-full flex-shrink-0 px-1"
+                >
+                  <TestimonialCard testimonial={t} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation arrows */}
+          <button
+            onClick={prevSlide}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 border border-white/10 rounded-full backdrop-blur-sm transition-colors"
+            aria-label="Témoignage précédent"
+          >
+            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button
+            onClick={nextSlide}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 border border-white/10 rounded-full backdrop-blur-sm transition-colors"
+            aria-label="Témoignage suivant"
+          >
+            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
+          {/* Dots indicator */}
+          <div className="flex justify-center gap-2 mt-6">
+            {testimonials.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goToSlide(i)}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  i === activeIndex
+                    ? 'w-6 bg-white'
+                    : 'w-1.5 bg-white/30 hover:bg-white/50'
+                }`}
+                aria-label={`Aller au témoignage ${i + 1}`}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Trust badge */}
@@ -147,5 +201,38 @@ export default function Testimonials() {
         </div>
       </div>
     </section>
+  );
+}
+
+// Extracted card component for reuse
+function TestimonialCard({ testimonial: t }: { testimonial: typeof testimonials[0] }) {
+  return (
+    <div className="testimonial-card bg-white/5 border border-white/10 p-7 hover:bg-white/8 transition-colors">
+      <div className="flex gap-0.5 mb-5">
+        {Array.from({ length: t.rating }).map((_, i) => (
+          <span key={i} className="text-amber-400 text-sm">★</span>
+        ))}
+      </div>
+      <p
+        className="text-stone-300 text-[13px] leading-relaxed mb-6 italic"
+        style={{ fontFamily: 'var(--font-display)', fontWeight: 400 }}
+      >
+        « {t.quote} »
+      </p>
+      <div className="border-t border-white/10 pt-4">
+        <p
+          className="text-white text-[14px]"
+          style={{ fontFamily: 'var(--font-display)', fontWeight: 500 }}
+        >
+          {t.name}
+        </p>
+        <p
+          className="text-stone-500 text-[11px] mt-0.5 uppercase tracking-widest"
+          style={{ fontFamily: 'var(--font-body)' }}
+        >
+          {t.role}
+        </p>
+      </div>
+    </div>
   );
 }

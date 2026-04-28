@@ -7,7 +7,7 @@ import { SectionLabel } from './ui/SectionHeading';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ─── Types ──────────────────────────────────────────────────────────────────
+// ─── Types ───────────────────────────────────────────────────────────────────
 
 type Consultation = {
   id: string;
@@ -26,7 +26,7 @@ type Consultation = {
   size: 'large' | 'medium' | 'small';
 };
 
-// ─── Data ───────────────────────────────────────────────────────────────────
+// ─── Data ────────────────────────────────────────────────────────────────────
 
 const consultations: Consultation[] = [
   {
@@ -362,7 +362,6 @@ function BookingCalendar({ consultation, onClose }: { consultation: Consultation
 
   return (
     <div>
-      {/* Selected soin */}
       <div className="flex items-center gap-3 p-3 mb-5 bg-stone-50 border border-stone-100">
         <div className="w-8 h-8 flex items-center justify-center shrink-0" style={{ background: 'var(--color-sage-light)' }}>
           <consultation.icon size={13} style={{ color: 'var(--color-sage)' }} />
@@ -373,7 +372,6 @@ function BookingCalendar({ consultation, onClose }: { consultation: Consultation
         </div>
       </div>
 
-      {/* Month nav */}
       <div className="flex items-center justify-between mb-3">
         <button onClick={prevMonth} className="p-2 hover:bg-stone-100 transition-colors">
           <ChevronLeft size={15} className="text-stone-500" />
@@ -386,14 +384,12 @@ function BookingCalendar({ consultation, onClose }: { consultation: Consultation
         </button>
       </div>
 
-      {/* Day headers */}
       <div className="grid grid-cols-6 gap-1 mb-1">
         {DAYS.map(d => (
           <div key={d} className="text-center text-[9px] uppercase tracking-widest text-stone-400 py-1" style={{ fontFamily: 'var(--font-body)' }}>{d}</div>
         ))}
       </div>
 
-      {/* Days */}
       <div className="grid grid-cols-6 gap-1 mb-5">
         {Array.from({ length: offset }).map((_, i) => <div key={`pad-${i}`} />)}
         {Array.from({ length: daysInMonth }).map((_, i) => {
@@ -418,7 +414,6 @@ function BookingCalendar({ consultation, onClose }: { consultation: Consultation
         })}
       </div>
 
-      {/* Time slots */}
       {selectedDay && (
         <div className="mb-5">
           <p className="text-[9px] uppercase tracking-widest text-stone-400 mb-2.5" style={{ fontFamily: 'var(--font-body)' }}>
@@ -443,7 +438,6 @@ function BookingCalendar({ consultation, onClose }: { consultation: Consultation
         </div>
       )}
 
-      {/* CTA */}
       <button
         disabled={!selectedDay || !selectedSlot}
         onClick={() => setBooked(true)}
@@ -483,7 +477,6 @@ function ConsultationModal({ consultation, onClose }: { consultation: Consultati
     gsap.to(panelRef.current, { y: 40, opacity: 0, duration: 0.25, onComplete: onClose });
   }, [onClose]);
 
-  // Close on overlay click
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === overlayRef.current) handleClose();
   };
@@ -500,7 +493,6 @@ function ConsultationModal({ consultation, onClose }: { consultation: Consultati
         className="relative w-full max-w-4xl overflow-hidden flex flex-col md:flex-row"
         style={{ background: 'var(--color-cream)', maxHeight: '95vh' }}
       >
-        {/* Close button */}
         <button
           onClick={handleClose}
           className="absolute top-4 right-4 z-30 w-9 h-9 flex items-center justify-center bg-white/90 backdrop-blur-sm hover:bg-white transition-colors shadow-sm"
@@ -509,7 +501,6 @@ function ConsultationModal({ consultation, onClose }: { consultation: Consultati
           <X size={15} className="text-stone-600" />
         </button>
 
-        {/* Left panel — image + meta */}
         <div className="relative md:w-[45%] shrink-0 h-56 md:h-auto overflow-hidden">
           <img
             src={consultation.image}
@@ -542,7 +533,6 @@ function ConsultationModal({ consultation, onClose }: { consultation: Consultati
           </div>
         </div>
 
-        {/* Right panel — content / booking */}
         <div className="flex-1 overflow-y-auto p-5 md:p-8">
           {!showBooking ? (
             <>
@@ -596,6 +586,135 @@ function ConsultationModal({ consultation, onClose }: { consultation: Consultati
             </>
           )}
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Mobile Slider ────────────────────────────────────────────────────────────
+
+function MobileSlider({ consultations, onOpen }: { consultations: Consultation[]; onOpen: (c: Consultation) => void }) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const scrollStartX = useRef(0);
+
+  // Update active index on scroll
+  const handleScroll = () => {
+    if (!trackRef.current) return;
+    const cardWidth = trackRef.current.clientWidth * 0.82 + 12; // 82vw + gap
+    const idx = Math.round(trackRef.current.scrollLeft / cardWidth);
+    setActiveIndex(Math.min(idx, consultations.length - 1));
+  };
+
+  return (
+    <div className="relative">
+      {/* Drag hint */}
+      <div className="flex items-center gap-2 mb-4 px-4">
+        <span className="text-[10px] uppercase tracking-widest text-stone-500" style={{ fontFamily: 'var(--font-body)' }}>
+          Glissez pour explorer
+        </span>
+        <ArrowRight size={10} className="text-stone-500" />
+      </div>
+
+      {/* Scrollable track */}
+      <div
+        ref={trackRef}
+        onScroll={handleScroll}
+        className="mobile-slider-track"
+        style={{
+          display: 'flex',
+          overflowX: 'auto',
+          scrollSnapType: 'x mandatory',
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+          gap: '12px',
+          paddingLeft: '16px',
+          paddingRight: '16px',
+          paddingBottom: '8px',
+        }}
+      >
+        <style>{`.mobile-slider-track::-webkit-scrollbar { display: none; }`}</style>
+
+        {consultations.map((c) => (
+          <div
+            key={c.id}
+            style={{
+              flex: '0 0 82vw',
+              scrollSnapAlign: 'start',
+              height: '260px',
+              position: 'relative',
+              overflow: 'hidden',
+              background: '#12100d',
+              border: '1px solid rgba(255,255,255,0.07)',
+            }}
+            onClick={() => onOpen(c)}
+          >
+            {/* Background */}
+            <img
+              src={c.image}
+              alt={c.title}
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(26,18,8,0.95) 0%, rgba(26,18,8,0.45) 60%, rgba(26,18,8,0.05) 100%)' }} />
+
+            {/* Content */}
+            <div style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px' }}>
+                <span style={{ fontFamily: 'var(--font-body)', fontSize: '9px', textTransform: 'uppercase', letterSpacing: '0.22em', padding: '4px 10px', border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.6)', backdropFilter: 'blur(4px)' }}>
+                  {c.tag}
+                </span>
+                <div style={{ width: '28px', height: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(138,158,138,0.2)', border: '1px solid rgba(138,158,138,0.35)', flexShrink: 0 }}>
+                  <c.icon size={13} style={{ color: 'var(--color-sage-light)' }} />
+                </div>
+              </div>
+
+              <div>
+                {c.popular && (
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '8px', textTransform: 'uppercase', letterSpacing: '0.3em', marginBottom: '6px', color: 'var(--color-sage-light)' }}>
+                    ✦ Plus demandé
+                  </p>
+                )}
+                <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: '1.15rem', color: 'white', lineHeight: 1.2, marginBottom: '8px' }}>
+                  {c.title}
+                </h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+                  <span style={{ fontFamily: 'var(--font-body)', fontSize: '10px', color: '#a8a29e', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Euro size={9} /> {c.price}
+                  </span>
+                  <span style={{ width: '1px', height: '12px', background: '#57534e' }} />
+                  <span style={{ fontFamily: 'var(--font-body)', fontSize: '10px', color: '#a8a29e', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Clock size={9} /> {c.duration}
+                  </span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontFamily: 'var(--font-body)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-sage-light)' }}>
+                  Voir & réserver <ArrowRight size={9} />
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        {/* Trailing spacer for last card peek effect */}
+        <div style={{ flex: '0 0 4px' }} />
+      </div>
+
+      {/* Dot indicators */}
+      <div className="flex items-center justify-center gap-1.5 mt-4">
+        {consultations.map((_, i) => (
+          <div
+            key={i}
+            style={{
+              width: i === activeIndex ? '20px' : '6px',
+              height: '6px',
+              borderRadius: '3px',
+              background: i === activeIndex ? 'var(--color-sage-light)' : 'rgba(255,255,255,0.2)',
+              transition: 'width 0.3s ease, background 0.3s ease',
+            }}
+          />
+        ))}
       </div>
     </div>
   );
@@ -659,79 +778,27 @@ export default function Services() {
           pointer-events: none;
           z-index: 6;
         }
-
-        /* ── Ripple on click ── */
         .bento-card:active { transform: translateY(-1px) scale(0.995); }
 
-        /* ── Grid — mobile first ── */
+        /* ── Desktop grid ── */
         .bento-grid {
           display: grid;
-          gap: 8px;
-          grid-template-columns: 1fr;
+          gap: 10px;
+          grid-template-columns: repeat(12, 1fr);
+          grid-template-rows: 300px 240px;
         }
-        .bento-card { min-height: 210px; }
-
-        /* ── Tablet ── */
-        @media (min-width: 600px) {
-          .bento-grid {
-            grid-template-columns: repeat(2, 1fr);
-          }
-          /* adulte: most popular spans full width on tablet */
-          .bento-card:nth-child(1) {
-            grid-column: span 2;
-            min-height: 260px;
-          }
-          .bento-card:nth-child(2),
-          .bento-card:nth-child(3),
-          .bento-card:nth-child(4),
-          .bento-card:nth-child(5) {
-            min-height: 220px;
-          }
-        }
-
-        /* ── Desktop ── */
-        @media (min-width: 1024px) {
-          .bento-grid {
-            grid-template-columns: repeat(12, 1fr);
-            grid-template-rows: 300px 240px;
-            gap: 10px;
-          }
-          /* adulte: large, 7 cols, row 1 */
-          .bento-card:nth-child(1) {
-            grid-column: 1 / span 7;
-            grid-row: 1;
-            min-height: unset;
-          }
-          /* sportif: popular, 5 cols, row 1 */
-          .bento-card:nth-child(2) {
-            grid-column: 8 / span 5;
-            grid-row: 1;
-            min-height: unset;
-          }
-          /* Row 2: 3 equal cards */
-          .bento-card:nth-child(3) {
-            grid-column: 1 / span 4;
-            grid-row: 2;
-            min-height: unset;
-          }
-          .bento-card:nth-child(4) {
-            grid-column: 5 / span 4;
-            grid-row: 2;
-            min-height: unset;
-          }
-          .bento-card:nth-child(5) {
-            grid-column: 9 / span 4;
-            grid-row: 2;
-            min-height: unset;
-          }
-        }
+        .bento-card:nth-child(1) { grid-column: 1 / span 7; grid-row: 1; }
+        .bento-card:nth-child(2) { grid-column: 8 / span 5; grid-row: 1; }
+        .bento-card:nth-child(3) { grid-column: 1 / span 4; grid-row: 2; }
+        .bento-card:nth-child(4) { grid-column: 5 / span 4; grid-row: 2; }
+        .bento-card:nth-child(5) { grid-column: 9 / span 4; grid-row: 2; }
       `}</style>
 
       <section id="soins" ref={sectionRef} className="py-20 md:py-28" style={{ background: 'var(--color-ink)' }}>
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
+        <div className="max-w-6xl mx-auto">
 
           {/* Header */}
-          <div className="mb-10 md:mb-12">
+          <div className="mb-8 md:mb-12 px-4 md:px-6">
             <SectionLabel light>Nos consultations</SectionLabel>
             <h2
               className="text-4xl md:text-5xl lg:text-6xl font-light text-stone-100 leading-tight mt-2"
@@ -746,19 +813,26 @@ export default function Services() {
               className="mt-3 text-stone-500 text-sm max-w-md leading-relaxed"
               style={{ fontFamily: 'var(--font-body)', fontWeight: 300 }}
             >
-              Cliquez sur une consultation pour découvrir les détails et réserver votre créneau directement.
+              Appuyez sur une consultation pour découvrir les détails et réserver votre créneau.
             </p>
           </div>
 
-          {/* Grid */}
-          <div className="bento-grid">
-            {consultations.map((c) => (
-              <BentoCard key={c.id} consultation={c} onOpen={setSelected} />
-            ))}
+          {/* Mobile: horizontal slider */}
+          <div className="md:hidden">
+            <MobileSlider consultations={consultations} onOpen={setSelected} />
+          </div>
+
+          {/* Desktop: bento grid */}
+          <div className="hidden md:block px-6">
+            <div className="bento-grid">
+              {consultations.map((c) => (
+                <BentoCard key={c.id} consultation={c} onOpen={setSelected} />
+              ))}
+            </div>
           </div>
 
           <p
-            className="mt-5 text-center text-[10px] text-stone-600 uppercase tracking-widest"
+            className="mt-5 text-center text-[10px] text-stone-600 uppercase tracking-widest px-4"
             style={{ fontFamily: 'var(--font-body)' }}
           >
             Mutuelles · Paiement CB · Facture fournie à chaque consultation
