@@ -110,7 +110,7 @@ export default function About() {
               className="font-semibold not-italic"
               style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic' }}
             >
-              Dr Arthur Pales
+              Arthur Pales
             </em>
           </SectionHeading>
 
