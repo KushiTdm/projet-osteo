@@ -9,7 +9,7 @@ interface SectionLabelProps {
 export function SectionLabel({ children, light = false }: SectionLabelProps) {
   return (
     <p
-      className={`text-[10px] uppercase mb-3 ${light ? 'text-stone-500' : 'text-stone-400'}`}
+      className={`text-xs md:text-[10px] uppercase mb-3 ${light ? 'text-stone-500' : 'text-stone-400'}`}
       style={{ fontFamily: 'var(--font-body)', letterSpacing: '0.3em' }}
     >
       {children}

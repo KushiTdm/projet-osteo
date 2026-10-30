@@ -126,7 +126,7 @@ export default function Testimonials() {
                   {t.name}
                 </p>
                 <p
-                  className="text-stone-500 text-[11px] mt-0.5 uppercase tracking-widest"
+                  className="text-stone-500 text-xs md:text-[11px] mt-0.5 uppercase tracking-widest"
                   style={{ fontFamily: 'var(--font-body)' }}
                 >
                   {t.role}

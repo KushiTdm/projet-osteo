@@ -61,7 +61,7 @@ export default function Header() {
         style={{ willChange: 'height, opacity' }}
       >
         <div className="py-2 px-6">
-          <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2 text-[11px] text-stone-400">
+          <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs md:text-[11px] text-stone-400">
             <a
               href="mailto:contact@osteeoparis.fr"
               className="flex items-center gap-1.5 hover:text-stone-200 transition-colors"
@@ -129,7 +129,7 @@ export default function Header() {
               <li key={link.label}>
                 <a
                   href={link.href}
-                  className="text-[11px] text-stone-500 tracking-widest uppercase hover:text-stone-900 transition-colors relative group"
+                  className="text-xs md:text-[11px] text-stone-500 tracking-widest uppercase hover:text-stone-900 transition-colors relative group"
                   style={{ fontFamily: 'var(--font-body)' }}
                 >
                   {link.label}
@@ -140,7 +140,7 @@ export default function Header() {
             <li>
               <a
                 href="#contact"
-                className="text-[10px] px-5 py-2.5 uppercase tracking-widest transition-all duration-200"
+                className="text-xs md:text-[10px] px-5 py-2.5 uppercase tracking-widest transition-all duration-200"
                 style={{
                   fontFamily: 'var(--font-body)',
                   background: 'var(--color-ink)',
@@ -193,7 +193,7 @@ export default function Header() {
               <li className="pt-2">
                 <a
                   href="#contact"
-                  className="block text-center bg-[var(--color-ink)] text-[var(--color-cream)] text-[10px] px-6 py-3.5 uppercase tracking-widest"
+                  className="block text-center bg-[var(--color-ink)] text-[var(--color-cream)] text-xs md:text-[10px] px-6 py-3.5 uppercase tracking-widest"
                   style={{ fontFamily: 'var(--font-body)' }}
                   onClick={() => setMenuOpen(false)}
                 >

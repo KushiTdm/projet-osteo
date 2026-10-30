@@ -7,9 +7,9 @@ import { ArrowDown } from 'lucide-react';
 gsap.registerPlugin(ScrollTrigger);
 
 const stats = [
-  { value: '+2 400', label: 'Patients accompagnés' },
-  { value: '10 ans', label: "D'expérience clinique" },
-  { value: '98 %', label: 'Taux de satisfaction' },
+  { value: '+2 400', label: 'Patients' },
+  { value: '10 ans', label: 'Expérience' },
+  { value: '98 %', label: 'Satisfaction' },
 ];
 
 export default function Hero() {
@@ -21,7 +21,6 @@ export default function Hero() {
     if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      // Staggered entrance
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
       tl.from('[data-hero-label]', { opacity: 0, y: 16, duration: 0.7 })
@@ -32,7 +31,6 @@ export default function Hero() {
         .from(imageRef.current, { opacity: 0, scale: 1.04, duration: 1.4, ease: 'power2.out' }, '-=1.2')
         .from(overlayRef.current, { opacity: 0, x: 30, duration: 0.7 }, '-=0.4');
 
-      // Parallax on image
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: 'top top',
@@ -40,9 +38,7 @@ export default function Hero() {
         scrub: 1,
         onUpdate: (self) => {
           if (imageRef.current) {
-            gsap.set(imageRef.current.querySelector('img'), {
-              y: self.progress * 80,
-            });
+            gsap.set(imageRef.current.querySelector('img'), { y: self.progress * 80 });
           }
         },
       });
@@ -56,13 +52,103 @@ export default function Hero() {
       id="accueil"
       ref={sectionRef}
       className="relative bg-[var(--color-cream)] overflow-hidden"
+      style={{ minHeight: '100dvh' }}
     >
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 min-h-[90vh]">
+      {/* Mobile layout */}
+      <div className="md:hidden flex flex-col" style={{ height: 'calc(100dvh - 80px)' }}>
+
+        {/* Image — prend 52% de la hauteur dispo */}
+        <div ref={imageRef} className="relative overflow-hidden shrink-0" style={{ height: '52%' }}>
+          <img
+            src="/assets/osteopathie-lille_verticale.png"
+            alt="Consultation ostéopathique – cabinet OstéoParis"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ objectPosition: 'center 25%' }}
+          />
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[var(--color-cream)] to-transparent" />
+        </div>
+
+        {/* Content — tout tient dans les 48% restants */}
+        <div className="flex flex-col justify-between flex-1 px-5 pt-2 pb-3 min-h-0">
+
+          {/* Top: label + titre + description */}
+          <div>
+            <p
+              data-hero-label
+              className="text-xs md:text-[8px] tracking-[0.28em] uppercase mb-1"
+              style={{ fontFamily: 'var(--font-body)', color: 'var(--color-sage)' }}
+            >
+              Ostéopathie · Santé · Bien-être
+            </p>
+
+            <h1
+              data-hero-title
+              className="leading-[1.0] mb-1.5"
+              style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.25rem, 6vw, 1.6rem)' }}
+            >
+              <div className="line-reveal"><span className="line-inner inline-block">Retrouvez</span></div>
+              <div className="line-reveal"><span className="line-inner inline-block font-semibold italic">l'équilibre</span></div>
+              <div className="line-reveal"><span className="line-inner inline-block font-light text-stone-500">de votre corps</span></div>
+            </h1>
+
+            <p
+              data-hero-desc
+              className="text-stone-500 text-xs md:text-[10px] leading-snug"
+              style={{ fontFamily: 'var(--font-body)', fontWeight: 300 }}
+            >
+              Soins ostéopathiques d'excellence au cœur de Paris. Techniques douces et précises pour soulager vos douleurs.
+            </p>
+          </div>
+
+          {/* Bottom: boutons + stats */}
+          <div>
+            <div data-hero-btns className="flex flex-col gap-1.5 mb-2">
+              <a
+                href="#contact"
+                className="bg-[var(--color-ink)] text-[var(--color-cream)] text-xs md:text-[10px] py-2.5 uppercase tracking-widest text-center"
+                style={{ fontFamily: 'var(--font-body)' }}
+              >
+                Prendre rendez-vous
+              </a>
+              <a
+                href="#soins"
+                className="border border-stone-300 text-stone-600 text-xs md:text-[10px] py-2 uppercase tracking-widest text-center"
+                style={{ fontFamily: 'var(--font-body)' }}
+              >
+                Découvrir nos soins
+              </a>
+            </div>
+
+            <div data-hero-stats className="flex gap-0 border-t border-stone-200 pt-2">
+              {stats.map((s, i) => (
+                <div key={s.label} className={`stat-item flex-1 text-center ${i < 2 ? 'border-r border-stone-200' : ''}`}>
+                  <p
+                    className="text-sm text-[var(--color-ink)]"
+                    style={{ fontFamily: 'var(--font-display)', fontWeight: 500 }}
+                  >
+                    {s.value}
+                  </p>
+                  <p
+                    className="text-xs md:text-[8px] text-stone-400 uppercase tracking-widest"
+                    style={{ fontFamily: 'var(--font-body)' }}
+                  >
+                    {s.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Desktop layout (inchangé) */}
+      <div className="hidden md:grid max-w-6xl mx-auto md:grid-cols-2 min-h-[90vh]">
         {/* Text side */}
         <div className="flex flex-col justify-center px-8 py-20 md:py-32 md:pr-16 order-2 md:order-1">
           <p
             data-hero-label
-            className="text-[10px] tracking-[0.35em] uppercase text-[var(--color-sage)] mb-5"
+            className="text-xs md:text-[10px] tracking-[0.35em] uppercase text-[var(--color-sage)] mb-5"
             style={{ fontFamily: 'var(--font-body)' }}
           >
             Ostéopathie · Santé · Bien-être
@@ -91,21 +177,20 @@ export default function Hero() {
           <div data-hero-btns className="flex flex-wrap gap-4 mb-14">
             <a
               href="#contact"
-              className="bg-[var(--color-ink)] text-[var(--color-cream)] text-[11px] px-8 py-4 uppercase tracking-widest hover:bg-stone-700 transition-colors"
+              className="bg-[var(--color-ink)] text-[var(--color-cream)] text-xs md:text-[11px] px-8 py-4 uppercase tracking-widest hover:bg-stone-700 transition-colors"
               style={{ fontFamily: 'var(--font-body)' }}
             >
               Prendre rendez-vous
             </a>
             <a
               href="#soins"
-              className="border border-stone-300 text-stone-600 text-[11px] px-8 py-4 uppercase tracking-widest hover:bg-stone-100 transition-colors"
+              className="border border-stone-300 text-stone-600 text-xs md:text-[11px] px-8 py-4 uppercase tracking-widest hover:bg-stone-100 transition-colors"
               style={{ fontFamily: 'var(--font-body)' }}
             >
               Découvrir nos soins
             </a>
           </div>
 
-          {/* Stats */}
           <div data-hero-stats className="flex flex-wrap gap-8 border-t border-stone-200 pt-8">
             {stats.map((s) => (
               <div key={s.label} className="stat-item">
@@ -116,7 +201,7 @@ export default function Hero() {
                   {s.value}
                 </p>
                 <p
-                  className="text-[11px] text-stone-400 uppercase tracking-widest"
+                  className="text-xs md:text-[11px] text-stone-400 uppercase tracking-widest"
                   style={{ fontFamily: 'var(--font-body)' }}
                 >
                   {s.label}
@@ -136,13 +221,12 @@ export default function Hero() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-ink)]/20 to-transparent" />
 
-          {/* Floating card */}
           <div
             ref={overlayRef}
-            className="absolute bottom-8 left-8 bg-white/92 backdrop-blur-sm p-5 shadow-xl hidden md:block border-l-2 border-[var(--color-sage)]"
+            className="absolute bottom-8 left-8 bg-white/92 backdrop-blur-sm p-5 shadow-xl border-l-2 border-[var(--color-sage)]"
           >
             <p
-              className="text-[10px] uppercase tracking-[0.25em] text-stone-400 mb-1"
+              className="text-xs md:text-[10px] uppercase tracking-[0.25em] text-stone-400 mb-1"
               style={{ fontFamily: 'var(--font-body)' }}
             >
               Ouvert du lundi au samedi
@@ -154,7 +238,7 @@ export default function Hero() {
               9h – 19h
             </p>
             <p
-              className="text-[11px] text-stone-500 mt-1"
+              className="text-xs md:text-[11px] text-stone-500 mt-1"
               style={{ fontFamily: 'var(--font-body)' }}
             >
               Consultation sur rendez-vous
@@ -163,9 +247,8 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 text-stone-400">
-        <span className="text-[9px] uppercase tracking-widest" style={{ fontFamily: 'var(--font-body)' }}>
+        <span className="text-xs md:text-[9px] uppercase tracking-widest" style={{ fontFamily: 'var(--font-body)' }}>
           Défiler
         </span>
         <ArrowDown size={14} className="animate-bounce" />

@@ -15,12 +15,6 @@ const highlights = [
   "Plus de 10 ans d'expérience clinique à Paris",
 ];
 
-const credentials = [
-  { label: "Diplôme d'État", value: "D.O. – 2013" },
-  { label: 'Spécialisation', value: 'Pédiatrie & Sport' },
-  { label: 'Langues', value: 'Français, Anglais' },
-];
-
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null);
   const imgRef = useRef<HTMLDivElement>(null);
@@ -29,7 +23,6 @@ export default function About() {
     if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      // Parallax on image
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: 'top bottom',
@@ -43,7 +36,6 @@ export default function About() {
         },
       });
 
-      // Text reveal
       gsap.from('[data-about-text] > *', {
         opacity: 0,
         x: 40,
@@ -62,43 +54,95 @@ export default function About() {
   }, []);
 
   return (
-    <section id="propos" ref={sectionRef} className="bg-stone-50 overflow-hidden">
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 min-h-[75vh]">
-        {/* Image */}
+    <section
+      id="propos"
+      ref={sectionRef}
+      className="bg-stone-50 overflow-hidden"
+      style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}
+    >
+      {/* Mobile layout */}
+      <div className="md:hidden flex flex-col" style={{ flex: 1 }}>
+        {/* Image - compact top portion */}
+        <div ref={imgRef} className="relative overflow-hidden shrink-0" style={{ height: '38vh' }}>
+          <img
+            src="/assets/Osteopathe_arthur.png"
+            alt="Dr Arthur Pales, ostéopathe à Paris"
+            className="absolute inset-0 w-full h-full object-cover object-top"
+          />
+          <div className="absolute inset-0 bg-[var(--color-sage)]/10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-stone-50" />
+        </div>
+
+        {/* Text content */}
+        <div
+          data-about-text
+          className="flex flex-col justify-between px-6 pt-4 pb-6"
+          style={{ flex: 1 }}
+        >
+          <div>
+            <SectionLabel>Votre ostéopathe</SectionLabel>
+            <h2
+              className="leading-tight text-stone-800 mb-3"
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(1.8rem, 7vw, 2.5rem)',
+              }}
+            >
+              Bonjour, je suis{' '}
+              <em style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', fontWeight: 600 }}>
+                Arthur Pales
+              </em>
+            </h2>
+
+            <p
+              className="text-stone-500 text-[13px] leading-relaxed mb-4"
+              style={{ fontFamily: 'var(--font-body)', fontWeight: 300 }}
+            >
+              Convaincue que chaque corps possède une capacité naturelle d'autorégulation, j'ai
+              fondé ce cabinet avec une vision holistique du soin : traiter l'individu dans sa
+              globalité, et non le simple symptôme.
+            </p>
+
+            {/* Credentials compact list */}
+            <ul className="space-y-2 mb-5">
+              {highlights.slice(0, 4).map((h) => (
+                <li
+                  key={h}
+                  className="flex items-start gap-2.5 text-[12px] text-stone-600"
+                  style={{ fontFamily: 'var(--font-body)' }}
+                >
+                  <CheckCircle2
+                    size={13}
+                    className="mt-0.5 shrink-0"
+                    style={{ color: 'var(--color-sage)' }}
+                  />
+                  {h}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <a
+            href="#contact"
+            className="block text-center bg-[var(--color-ink)] text-[var(--color-cream)] text-xs md:text-[10px] py-4 uppercase tracking-widest"
+            style={{ fontFamily: 'var(--font-body)' }}
+          >
+            Prendre rendez-vous
+          </a>
+        </div>
+      </div>
+
+      {/* Desktop layout (unchanged) */}
+      <div className="hidden md:grid max-w-6xl mx-auto md:grid-cols-2 min-h-[75vh] w-full">
         <div ref={imgRef} className="relative h-80 md:h-auto overflow-hidden">
           <img
             src="/assets/Osteopathe_arthur.png"
             alt="Dr Arthur Pales, ostéopathe à Paris"
             className="absolute inset-0 w-full h-full object-cover object-top"
           />
-          {/* Subtle tint */}
           <div className="absolute inset-0 bg-[var(--color-sage)]/10" />
-
-          {/* Credential cards */}
-          <div className="absolute bottom-6 right-6 space-y-2 hidden md:block">
-            {credentials.map((c) => (
-              <div
-                key={c.label}
-                className="bg-white/92 backdrop-blur-sm px-4 py-3 text-right shadow-sm"
-              >
-                <p
-                  className="text-[9px] uppercase tracking-widest text-stone-400"
-                  style={{ fontFamily: 'var(--font-body)' }}
-                >
-                  {c.label}
-                </p>
-                <p
-                  className="text-sm text-[var(--color-ink)]"
-                  style={{ fontFamily: 'var(--font-display)', fontWeight: 500 }}
-                >
-                  {c.value}
-                </p>
-              </div>
-            ))}
-          </div>
         </div>
 
-        {/* Text */}
         <div
           data-about-text
           className="flex flex-col justify-center px-8 md:px-14 py-20"
@@ -152,7 +196,7 @@ export default function About() {
 
           <a
             href="#contact"
-            className="inline-block self-start bg-[var(--color-ink)] text-[var(--color-cream)] text-[11px] px-8 py-4 uppercase tracking-widest hover:bg-stone-700 transition-colors"
+            className="inline-block self-start bg-[var(--color-ink)] text-[var(--color-cream)] text-xs md:text-[11px] px-8 py-4 uppercase tracking-widest hover:bg-stone-700 transition-colors"
             style={{ fontFamily: 'var(--font-body)' }}
           >
             Prendre rendez-vous
