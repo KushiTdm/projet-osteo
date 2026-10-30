@@ -81,10 +81,10 @@ export default function Footer() {
           <p className="text-xs md:text-[10px] text-stone-700" style={{ fontFamily: 'var(--font-body)' }}>
             © 2026 OstéoParis – Dr Arthur Pales. Tous droits réservés.
           </p>
-          <p className="text-xs md:text-[10px] text-stone-700 uppercase tracking-widest" style={{ fontFamily: 'var(--font-body)' }}>
-            Site réalisé par{' '}
-            <a href="https://neuraweb.fr" target="_blank" rel="noopener noreferrer" className="text-stone-500 hover:text-stone-400">
-              Neuraweb.fr
+          <p className="text-xs md:text-[10px] text-stone-400 uppercase tracking-widest" style={{ fontFamily: 'var(--font-body)' }}>
+            Site développé par{' '}
+            <a href="https://neuraweb.fr" target="_blank" rel="noopener noreferrer" className="inline-block py-2 text-stone-300 underline hover:text-white">
+              Neuraweb
             </a>
           </p>
         </div>
@@ -176,10 +176,10 @@ export default function Footer() {
           </div>
 
           <div className="mt-6 text-center">
-            <p className="text-xs md:text-[10px] text-stone-700 uppercase tracking-widest" style={{ fontFamily: 'var(--font-body)' }}>
-              Site réalisé par{' '}
-              <a href="https://neuraweb.fr" target="_blank" rel="noopener noreferrer" className="text-stone-500 hover:text-stone-400 transition-colors">
-                Neuraweb.fr
+            <p className="text-xs md:text-[10px] text-stone-400 uppercase tracking-widest" style={{ fontFamily: 'var(--font-body)' }}>
+              Site développé par{' '}
+              <a href="https://neuraweb.fr" target="_blank" rel="noopener noreferrer" className="inline-block py-2 text-stone-300 underline hover:text-white transition-colors">
+                Neuraweb
               </a>
             </p>
           </div>
