@@ -84,7 +84,7 @@ export default function Footer() {
           <p className="text-xs md:text-[10px] text-stone-700 uppercase tracking-widest" style={{ fontFamily: 'var(--font-body)' }}>
             Site réalisé par{' '}
             <a href="https://neuraweb.fr" target="_blank" rel="noopener noreferrer" className="text-stone-500 hover:text-stone-400">
-              Neuraweb.tech
+              Neuraweb.fr
             </a>
           </p>
         </div>
@@ -179,7 +179,7 @@ export default function Footer() {
             <p className="text-xs md:text-[10px] text-stone-700 uppercase tracking-widest" style={{ fontFamily: 'var(--font-body)' }}>
               Site réalisé par{' '}
               <a href="https://neuraweb.fr" target="_blank" rel="noopener noreferrer" className="text-stone-500 hover:text-stone-400 transition-colors">
-                Neuraweb.tech
+                Neuraweb.fr
               </a>
             </p>
           </div>
